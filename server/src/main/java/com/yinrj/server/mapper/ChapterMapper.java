@@ -3,8 +3,11 @@ package com.yinrj.server.mapper;
 import com.yinrj.server.domain.Chapter;
 import com.yinrj.server.domain.ChapterExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface ChapterMapper {
     long countByExample(ChapterExample example);
 
