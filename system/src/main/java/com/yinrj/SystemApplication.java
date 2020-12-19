@@ -1,5 +1,6 @@
 package com.yinrj;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +14,7 @@ import org.springframework.core.env.Environment;
  */
 @SpringBootApplication
 @EnableEurekaClient
+@MapperScan("com.yinrj.server.mapper")
 public class SystemApplication {
     private static final Logger LOGGER = LoggerFactory.getLogger(SystemApplication.class);
     public static void main(String[] args) {
