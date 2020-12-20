@@ -1,7 +1,8 @@
-package com.yinrj.business.controller;
+package com.yinrj.business.controller.admin;
 
 import com.yinrj.server.domain.Chapter;
 import com.yinrj.server.domain.Test;
+import com.yinrj.server.dto.ChapterDto;
 import com.yinrj.server.service.ChapterService;
 import com.yinrj.server.service.TestService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,25 +16,19 @@ import java.util.List;
  * @date 2020/12/19
  */
 @RestController
+@RequestMapping("/admin")
 public class ChapterController {
     @Resource
     private ChapterService chapterService;
-
-    @Resource
-    private TestService testService;
 
     @RequestMapping("/index")
     public String index() {
         return "success";
     }
 
-    @RequestMapping("/list")
-    public List<Chapter> chapterList() {
+    @RequestMapping("/chapter/list")
+    public List<ChapterDto> chapterList() {
         return chapterService.getList();
     }
 
-    @RequestMapping("/test")
-    public List<Test> getList() {
-        return testService.getAllTest();
-    }
 }
