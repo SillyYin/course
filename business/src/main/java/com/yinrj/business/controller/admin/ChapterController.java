@@ -5,9 +5,7 @@ import com.yinrj.server.dto.PageDto;
 import com.yinrj.server.dto.ResponseDto;
 import com.yinrj.server.service.ChapterService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -22,7 +20,7 @@ public class ChapterController {
     @Resource
     private ChapterService chapterService;
 
-    @RequestMapping("/chapter/list")
+    @PostMapping("/chapter/list")
     public ResponseDto<PageDto<ChapterDto>> chapterList(@RequestBody PageDto<ChapterDto> pageDto) {
         log.info("pageDto: {}", pageDto);
         ResponseDto<PageDto<ChapterDto>> responseDto = new ResponseDto<>();
@@ -30,13 +28,20 @@ public class ChapterController {
         return responseDto;
     }
 
-    @RequestMapping("/chapter/save")
+    @PostMapping("/chapter/save")
     public ResponseDto<ChapterDto> save(@RequestBody ChapterDto chapterDto) {
         log.info("[save]chapterDto: {}", chapterDto);
         ResponseDto<ChapterDto> responseDto = new ResponseDto<>();
-        chapterService.addChapter(chapterDto);
+        chapterService.save(chapterDto);
         responseDto.setContent(chapterDto);
         return responseDto;
     }
 
+    @DeleteMapping("/chapter/delete/{id}")
+    public ResponseDto<ChapterDto> delete(@PathVariable String id) {
+        log.info("[delete]id: {}", id);
+        ResponseDto<ChapterDto> responseDto = new ResponseDto<>();
+        chapterService.delete(id);
+        return responseDto;
+    }
 }

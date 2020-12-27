@@ -10,6 +10,7 @@ import com.yinrj.server.service.ChapterService;
 import com.yinrj.server.util.CopyUtil;
 import com.yinrj.server.util.UuidUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -35,9 +36,30 @@ public class ChapterServiceImpl implements ChapterService {
     }
 
     @Override
-    public void addChapter(ChapterDto chapterDto) {
-        chapterDto.setId(UuidUtil.getShortUuid());
+    public void save(ChapterDto chapterDto) {
         Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
+        if (StringUtils.isEmpty(chapterDto.getId())) {
+            String chapterId = addChapter(chapter);
+            chapterDto.setId(chapterId);
+        } else {
+            updateChapter(chapter);
+        }
+    }
+
+    @Override
+    public void delete(String id) {
+        chapterMapper.deleteByPrimaryKey(id);
+    }
+
+
+    private String addChapter(Chapter chapter) {
+        String chapterId = UuidUtil.getShortUuid();
+        chapter.setId(chapterId);
         chapterMapper.insert(chapter);
+        return chapterId;
+    }
+
+    private void updateChapter(Chapter chapter) {
+        chapterMapper.updateByPrimaryKey(chapter);
     }
 }

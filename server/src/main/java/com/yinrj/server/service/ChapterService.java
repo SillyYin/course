@@ -10,5 +10,7 @@ import com.yinrj.server.dto.PageDto;
 public interface ChapterService {
     PageDto<ChapterDto> getList(PageDto<ChapterDto> pageDto);
 
-    void addChapter(ChapterDto chapterDto);
+    void save(ChapterDto chapterDto);
+
+    void delete(String id);
 }
