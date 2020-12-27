@@ -7,12 +7,11 @@ import com.yinrj.server.dto.ChapterDto;
 import com.yinrj.server.dto.PageDto;
 import com.yinrj.server.mapper.ChapterMapper;
 import com.yinrj.server.service.ChapterService;
+import com.yinrj.server.util.CopyUtil;
 import com.yinrj.server.util.UuidUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,12 +28,7 @@ public class ChapterServiceImpl implements ChapterService {
         List<Chapter> chapterList = chapterMapper.selectByExample(null);
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
         pageDto.setTotalCount(pageInfo.getTotal());
-        List<ChapterDto> chapterDtoList = new ArrayList<>();
-        for (Chapter chapter : chapterList) {
-            ChapterDto chapterDto = new ChapterDto();
-            BeanUtils.copyProperties(chapter, chapterDto);
-            chapterDtoList.add(chapterDto);
-        }
+        List<ChapterDto> chapterDtoList = CopyUtil.copyList(chapterList, ChapterDto.class);
         pageDto.setData(chapterDtoList);
         return pageDto;
     }
@@ -42,8 +36,7 @@ public class ChapterServiceImpl implements ChapterService {
     @Override
     public void addChapter(ChapterDto chapterDto) {
         chapterDto.setId(UuidUtil.getShortUuid());
-        Chapter chapter = new Chapter();
-        BeanUtils.copyProperties(chapterDto, chapter);
+        Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
         chapterMapper.insert(chapter);
     }
 }
