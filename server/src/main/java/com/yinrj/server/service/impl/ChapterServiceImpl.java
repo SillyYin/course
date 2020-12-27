@@ -7,6 +7,7 @@ import com.yinrj.server.dto.ChapterDto;
 import com.yinrj.server.dto.PageDto;
 import com.yinrj.server.mapper.ChapterMapper;
 import com.yinrj.server.service.ChapterService;
+import com.yinrj.server.util.UuidUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +37,13 @@ public class ChapterServiceImpl implements ChapterService {
         }
         pageDto.setData(chapterDtoList);
         return pageDto;
+    }
+
+    @Override
+    public void addChapter(ChapterDto chapterDto) {
+        chapterDto.setId(UuidUtil.getShortUuid());
+        Chapter chapter = new Chapter();
+        BeanUtils.copyProperties(chapterDto, chapter);
+        chapterMapper.insert(chapter);
     }
 }
