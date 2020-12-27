@@ -23,6 +23,7 @@ public class ChapterServiceImpl implements ChapterService {
     @Resource
     private ChapterMapper chapterMapper;
 
+    @Override
     public PageDto<ChapterDto> getList(PageDto<ChapterDto> pageDto) {
         PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
         List<Chapter> chapterList = chapterMapper.selectByExample(null);
