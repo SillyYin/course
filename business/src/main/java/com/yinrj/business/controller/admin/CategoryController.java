@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author Yin
@@ -26,6 +27,13 @@ public class CategoryController {
     public ResponseDto<PageDto<CategoryDto>> categoryList(@RequestBody PageDto<CategoryDto> pageDto) {
         ResponseDto<PageDto<CategoryDto>> responseDto = new ResponseDto<>();
         responseDto.setContent(categoryService.getList(pageDto));
+        return responseDto;
+    }
+
+    @PostMapping("/category/all")
+    public ResponseDto<List<CategoryDto>> getAllCategory() {
+        ResponseDto<List<CategoryDto>> responseDto = new ResponseDto<>();
+        responseDto.setContent(categoryService.getAllCategory());
         return responseDto;
     }
 
