@@ -6,6 +6,7 @@ import com.yinrj.server.domain.Section;
 import com.yinrj.server.domain.SectionExample;
 import com.yinrj.server.dto.PageDto;
 import com.yinrj.server.dto.SectionDto;
+import com.yinrj.server.dto.SectionPageDto;
 import com.yinrj.server.mapper.SectionMapper;
 import com.yinrj.server.service.SectionService;
 import com.yinrj.server.util.CopyUtil;
@@ -27,9 +28,16 @@ public class SectionServiceImpl implements SectionService {
     private SectionMapper sectionMapper;
 
     @Override
-    public PageDto<SectionDto> getList(PageDto<SectionDto> pageDto) {
+    public PageDto<SectionDto> getList(SectionPageDto<SectionDto> pageDto) {
         PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
         SectionExample example = new SectionExample();
+        SectionExample.Criteria criteria = example.createCriteria();
+        if (!StringUtils.isEmpty(pageDto.getChapterId())) {
+            criteria.andChapterIdEqualTo(pageDto.getChapterId());
+        }
+        if (!StringUtils.isEmpty(pageDto.getCourseId())) {
+            criteria.andCourseIdEqualTo(pageDto.getCourseId());
+        }
         example.setOrderByClause("sort asc");
         List<Section> sectionList = sectionMapper.selectByExample(example);
         PageInfo<Section> pageInfo = new PageInfo<>(sectionList);

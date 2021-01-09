@@ -3,6 +3,7 @@ package com.yinrj.business.controller.admin;
 import com.yinrj.server.dto.PageDto;
 import com.yinrj.server.dto.ResponseDto;
 import com.yinrj.server.dto.SectionDto;
+import com.yinrj.server.dto.SectionPageDto;
 import com.yinrj.server.service.SectionService;
 import com.yinrj.server.util.ValidatorUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +25,10 @@ public class SectionController {
     private SectionService sectionService;
 
     @PostMapping("/section/list")
-    public ResponseDto<PageDto<SectionDto>> sectionList(@RequestBody PageDto<SectionDto> pageDto) {
+    public ResponseDto<PageDto<SectionDto>> sectionList(@RequestBody SectionPageDto<SectionDto> pageDto) {
         ResponseDto<PageDto<SectionDto>> responseDto = new ResponseDto<>();
+        ValidatorUtil.require(pageDto.getChapterId(), "大章Id");
+        ValidatorUtil.require(pageDto.getCourseId(), "课程Id");
         responseDto.setContent(sectionService.getList(pageDto));
         return responseDto;
     }

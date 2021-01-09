@@ -1,6 +1,7 @@
 package com.yinrj.business.controller.admin;
 
 import com.yinrj.server.dto.ChapterDto;
+import com.yinrj.server.dto.ChapterPageDto;
 import com.yinrj.server.dto.PageDto;
 import com.yinrj.server.dto.ResponseDto;
 import com.yinrj.server.service.ChapterService;
@@ -24,8 +25,9 @@ public class ChapterController {
     private ChapterService chapterService;
 
     @PostMapping("/chapter/list")
-    public ResponseDto<PageDto<ChapterDto>> chapterList(@RequestBody PageDto<ChapterDto> pageDto) {
+    public ResponseDto<PageDto<ChapterDto>> chapterList(@RequestBody ChapterPageDto<ChapterDto> pageDto) {
         ResponseDto<PageDto<ChapterDto>> responseDto = new ResponseDto<>();
+        ValidatorUtil.require(pageDto.getCourseId(), "课程ID");
         responseDto.setContent(chapterService.getList(pageDto));
         return responseDto;
     }
