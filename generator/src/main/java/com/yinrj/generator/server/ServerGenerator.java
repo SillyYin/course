@@ -20,8 +20,8 @@ public class ServerGenerator {
     public static final String CONTROLLER_PATH = MODULE + "/src/main/java/com/yinrj/" + MODULE + "/controller/admin/";
 
     public static void main(String[] args) throws IOException, TemplateException {
-        String Domain = "Section";
-        String domain = "section";
+        String Domain = "Course";
+        String domain = "course";
         String tableNameCn = "小节";
         Map<String, Object> map = new HashMap<>();
         map.put("Domain", Domain);

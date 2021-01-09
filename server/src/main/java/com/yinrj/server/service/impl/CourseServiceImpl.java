@@ -1,0 +1,74 @@
+package com.yinrj.server.service.impl;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.yinrj.server.domain.Course;
+import com.yinrj.server.dto.CourseDto;
+import com.yinrj.server.dto.PageDto;
+import com.yinrj.server.mapper.CourseMapper;
+import com.yinrj.server.service.CourseService;
+import com.yinrj.server.util.CopyUtil;
+import com.yinrj.server.util.UuidUtil;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * @author Yin
+ * @date 2020/12/19
+ */
+@Service
+public class CourseServiceImpl implements CourseService {
+    @Resource
+    private CourseMapper courseMapper;
+
+    @Override
+    public PageDto<CourseDto> getList(PageDto<CourseDto> pageDto) {
+        PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
+        List<Course> courseList = courseMapper.selectByExample(null);
+        PageInfo<Course> pageInfo = new PageInfo<>(courseList);
+        pageDto.setTotalCount(pageInfo.getTotal());
+        List<CourseDto> courseDtoList = CopyUtil.copyList(courseList, CourseDto.class);
+        pageDto.setData(courseDtoList);
+        return pageDto;
+    }
+
+    @Override
+    public void save(CourseDto courseDto) {
+        Date now = new Date();
+        courseDto.setUpdatedAt(now);
+        Course course = CopyUtil.copy(courseDto, Course.class);
+        if (StringUtils.isEmpty(courseDto.getId())) {
+            String courseId = addCourse(course);
+            courseDto.setId(courseId);
+        } else {
+            updateCourse(course);
+        }
+    }
+
+    @Override
+    public void delete(String id) {
+        courseMapper.deleteByPrimaryKey(id);
+    }
+
+
+    private String addCourse(Course course) {
+        Date now = new Date();
+        course.setCreatedAt(now);
+        course.setUpdatedAt(now);
+        String courseId = UuidUtil.getShortUuid();
+        course.setId(courseId);
+        courseMapper.insert(course);
+        return courseId;
+    }
+
+    private void updateCourse(Course course) {
+        Course selectedCourse = courseMapper.selectByPrimaryKey(course.getId());
+        course.setUpdatedAt(new Date());
+        course.setCreatedAt(selectedCourse.getCreatedAt());
+        courseMapper.updateByPrimaryKey(course);
+    }
+}
