@@ -13,4 +13,6 @@ public interface CourseService {
     void save(CourseDto courseDto);
 
     void delete(String id);
+
+    void updateCourseTime(String courseId);
 }

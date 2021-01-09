@@ -6,9 +6,11 @@ import com.yinrj.server.domain.Course;
 import com.yinrj.server.dto.CourseDto;
 import com.yinrj.server.dto.PageDto;
 import com.yinrj.server.mapper.CourseMapper;
+import com.yinrj.server.mapper.my.MyCourseMapper;
 import com.yinrj.server.service.CourseService;
 import com.yinrj.server.util.CopyUtil;
 import com.yinrj.server.util.UuidUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -21,9 +23,13 @@ import java.util.List;
  * @date 2020/12/19
  */
 @Service
+@Slf4j
 public class CourseServiceImpl implements CourseService {
     @Resource
     private CourseMapper courseMapper;
+
+    @Resource
+    private MyCourseMapper myCourseMapper;
 
     @Override
     public PageDto<CourseDto> getList(PageDto<CourseDto> pageDto) {
@@ -52,6 +58,13 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void delete(String id) {
         courseMapper.deleteByPrimaryKey(id);
+    }
+
+
+    @Override
+    public void updateCourseTime(String courseId) {
+        log.debug("更新课程时常: {}", courseId);
+        myCourseMapper.updateTime(courseId);
     }
 
 

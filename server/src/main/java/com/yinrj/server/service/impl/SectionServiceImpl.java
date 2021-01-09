@@ -8,6 +8,7 @@ import com.yinrj.server.dto.PageDto;
 import com.yinrj.server.dto.SectionDto;
 import com.yinrj.server.dto.SectionPageDto;
 import com.yinrj.server.mapper.SectionMapper;
+import com.yinrj.server.service.CourseService;
 import com.yinrj.server.service.SectionService;
 import com.yinrj.server.util.CopyUtil;
 import com.yinrj.server.util.UuidUtil;
@@ -26,6 +27,9 @@ import java.util.List;
 public class SectionServiceImpl implements SectionService {
     @Resource
     private SectionMapper sectionMapper;
+
+    @Resource
+    private CourseService courseService;
 
     @Override
     public PageDto<SectionDto> getList(SectionPageDto<SectionDto> pageDto) {
@@ -56,6 +60,7 @@ public class SectionServiceImpl implements SectionService {
         } else {
             updateSection(section);
         }
+        courseService.updateCourseTime(sectionDto.getCourseId());
     }
 
     @Override
