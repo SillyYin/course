@@ -13,20 +13,30 @@ import java.util.Map;
  */
 public class ServerGenerator {
 
+    public static final String MODULE = "business";
+
     public static final String SERVICE_PATH = "server/src/main/java/com/yinrj/server/service/";
     public static final String SERVICE_IMPL_PATH = "server/src/main/java/com/yinrj/server/service/impl/";
+    public static final String CONTROLLER_PATH = MODULE + "/src/main/java/com/yinrj/" + MODULE + "/controller/admin/";
 
     public static void main(String[] args) throws IOException, TemplateException {
         String Domain = "Section";
         String domain = "section";
+        String tableNameCn = "小节";
         Map<String, Object> map = new HashMap<>();
         map.put("Domain", Domain);
         map.put("domain", domain);
+        map.put("tableNameCn", tableNameCn);
+        map.put("module", MODULE);
 
         FreemarkerUtil.initConfig("service.ftl");
         FreemarkerUtil.generator(SERVICE_PATH + Domain + "Service.java", map);
 
         FreemarkerUtil.initConfig("serviceimpl.ftl");
         FreemarkerUtil.generator(SERVICE_IMPL_PATH + Domain + "ServiceImpl.java", map);
+
+        FreemarkerUtil.initConfig("controller.ftl");
+        FreemarkerUtil.generator(CONTROLLER_PATH + Domain + "Controller.java", map);
+
     }
 }

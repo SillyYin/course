@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 @RequestMapping("/admin")
 @Slf4j
 public class ChapterController {
-    public static final String BUSINESS_NAME = "Chapter";
+    public static final String BUSINESS_NAME = "大章";
 
     @Resource
     private ChapterService chapterService;
