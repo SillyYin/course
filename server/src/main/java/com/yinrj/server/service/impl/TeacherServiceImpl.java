@@ -3,8 +3,8 @@ package com.yinrj.server.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yinrj.server.domain.Teacher;
-import com.yinrj.server.dto.TeacherDto;
 import com.yinrj.server.dto.PageDto;
+import com.yinrj.server.dto.TeacherDto;
 import com.yinrj.server.mapper.TeacherMapper;
 import com.yinrj.server.service.TeacherService;
 import com.yinrj.server.util.CopyUtil;
@@ -49,6 +49,12 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public void delete(String id) {
         teacherMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public List<TeacherDto> getAllTeachers() {
+        List<Teacher> teacherList = teacherMapper.selectByExample(null);
+        return CopyUtil.copyList(teacherList, TeacherDto.class);
     }
 
 

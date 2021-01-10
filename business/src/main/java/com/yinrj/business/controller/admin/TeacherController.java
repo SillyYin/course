@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author Yin
@@ -47,6 +48,13 @@ public class TeacherController {
     public ResponseDto<TeacherDto> delete(@PathVariable String id) {
         ResponseDto<TeacherDto> responseDto = new ResponseDto<>();
         teacherService.delete(id);
+        return responseDto;
+    }
+
+    @PostMapping("/teacher/all")
+    public ResponseDto<List<TeacherDto>> getAllTeacher() {
+        ResponseDto<List<TeacherDto>> responseDto = new ResponseDto<>();
+        responseDto.setContent(teacherService.getAllTeachers());
         return responseDto;
     }
 }
