@@ -7,6 +7,7 @@ import com.yinrj.server.dto.CourseDto;
 import com.yinrj.server.dto.PageDto;
 import com.yinrj.server.mapper.CourseMapper;
 import com.yinrj.server.mapper.my.MyCourseMapper;
+import com.yinrj.server.service.CourseCategoryService;
 import com.yinrj.server.service.CourseService;
 import com.yinrj.server.util.CopyUtil;
 import com.yinrj.server.util.UuidUtil;
@@ -31,6 +32,9 @@ public class CourseServiceImpl implements CourseService {
     @Resource
     private MyCourseMapper myCourseMapper;
 
+    @Resource
+    private CourseCategoryService courseCategoryService;
+
     @Override
     public PageDto<CourseDto> getList(PageDto<CourseDto> pageDto) {
         PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
@@ -53,6 +57,9 @@ public class CourseServiceImpl implements CourseService {
         } else {
             updateCourse(course);
         }
+
+        // 批量保存分类
+        courseCategoryService.saveBatch(courseDto.getId(), courseDto.getCategorys());
     }
 
     @Override

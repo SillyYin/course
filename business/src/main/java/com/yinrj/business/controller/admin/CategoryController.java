@@ -4,6 +4,7 @@ import com.yinrj.server.dto.CategoryDto;
 import com.yinrj.server.dto.PageDto;
 import com.yinrj.server.dto.ResponseDto;
 import com.yinrj.server.service.CategoryService;
+import com.yinrj.server.util.ValidatorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ import java.util.List;
 @RequestMapping("/admin")
 @Slf4j
 public class CategoryController {
-    public static final String BUSINESS_NAME = "小节";
+    public static final String BUSINESS_NAME = "分类";
 
     @Resource
     private CategoryService categoryService;
@@ -42,6 +43,10 @@ public class CategoryController {
         ResponseDto<CategoryDto> responseDto = new ResponseDto<>();
 
         // 保存校验
+        ValidatorUtil.require(categoryDto.getName(), "分类名称");
+        ValidatorUtil.length(categoryDto.getName(), "分类名称", 1, 50);
+        ValidatorUtil.require(categoryDto.getParent(), "父Id");
+        ValidatorUtil.length(categoryDto.getParent(), "父Id", 1, 8);
 
         categoryService.save(categoryDto);
         responseDto.setContent(categoryDto);

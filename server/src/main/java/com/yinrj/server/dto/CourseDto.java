@@ -2,6 +2,7 @@ package com.yinrj.server.dto;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class CourseDto {
     private String id;
@@ -29,6 +30,19 @@ public class CourseDto {
     private Date createdAt;
 
     private Date updatedAt;
+
+    /**
+     * 课程所属于的分类
+     */
+    private List<CategoryDto> categorys;
+
+    public List<CategoryDto> getCategorys() {
+        return categorys;
+    }
+
+    public void setCategorys(List<CategoryDto> categorys) {
+        this.categorys = categorys;
+    }
 
     public String getId() {
         return id;
@@ -136,24 +150,21 @@ public class CourseDto {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", name=").append(name);
-        sb.append(", summary=").append(summary);
-        sb.append(", time=").append(time);
-        sb.append(", price=").append(price);
-        sb.append(", image=").append(image);
-        sb.append(", level=").append(level);
-        sb.append(", charge=").append(charge);
-        sb.append(", status=").append(status);
-        sb.append(", enroll=").append(enroll);
-        sb.append(", sort=").append(sort);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append("]");
-        return sb.toString();
+        return "CourseDto{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", summary='" + summary + '\'' +
+                ", time=" + time +
+                ", price=" + price +
+                ", image='" + image + '\'' +
+                ", level='" + level + '\'' +
+                ", charge='" + charge + '\'' +
+                ", status='" + status + '\'' +
+                ", enroll=" + enroll +
+                ", sort=" + sort +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", categorys=" + categorys +
+                '}';
     }
 }
