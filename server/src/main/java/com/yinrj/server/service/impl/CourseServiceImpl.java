@@ -4,9 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yinrj.server.domain.Course;
 import com.yinrj.server.domain.CourseContent;
+import com.yinrj.server.domain.CourseExample;
 import com.yinrj.server.dto.CourseContentDto;
 import com.yinrj.server.dto.CourseDto;
 import com.yinrj.server.dto.PageDto;
+import com.yinrj.server.dto.SortDto;
 import com.yinrj.server.mapper.CourseContentMapper;
 import com.yinrj.server.mapper.CourseMapper;
 import com.yinrj.server.mapper.my.MyCourseMapper;
@@ -45,7 +47,9 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public PageDto<CourseDto> getList(PageDto<CourseDto> pageDto) {
         PageHelper.startPage(pageDto.getPageNum(), pageDto.getPageSize());
-        List<Course> courseList = courseMapper.selectByExample(null);
+        CourseExample example = new CourseExample();
+        example.setOrderByClause("sort asc");
+        List<Course> courseList = courseMapper.selectByExample(example);
         PageInfo<Course> pageInfo = new PageInfo<>(courseList);
         pageDto.setTotalCount(pageInfo.getTotal());
         List<CourseDto> courseDtoList = CopyUtil.copyList(courseList, CourseDto.class);
@@ -101,6 +105,20 @@ public class CourseServiceImpl implements CourseService {
             i = courseContentMapper.insert(courseContent);
         }
         return i;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void sort(SortDto sortDto) {
+        myCourseMapper.updateSort(sortDto);
+
+        if (sortDto.getOldSort() > sortDto.getNewSort()) {
+            myCourseMapper.moveSortsForward(sortDto);
+        }
+
+        if (sortDto.getNewSort() > sortDto.getOldSort()) {
+            myCourseMapper.moveSortsBackward(sortDto);
+        }
     }
 
 

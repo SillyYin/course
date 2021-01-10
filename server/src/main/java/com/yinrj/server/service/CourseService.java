@@ -3,6 +3,7 @@ package com.yinrj.server.service;
 import com.yinrj.server.dto.CourseContentDto;
 import com.yinrj.server.dto.CourseDto;
 import com.yinrj.server.dto.PageDto;
+import com.yinrj.server.dto.SortDto;
 
 /**
  * @author: Yin
@@ -20,4 +21,6 @@ public interface CourseService {
     CourseContentDto getCourseContentByCourseId(String courseId);
 
     int saveContent(CourseContentDto courseContentDto);
+
+    void sort(SortDto sortDto);
 }

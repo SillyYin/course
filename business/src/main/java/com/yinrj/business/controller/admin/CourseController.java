@@ -75,4 +75,11 @@ public class CourseController {
         courseService.saveContent(courseContentDto);
         return responseDto;
     }
+
+    @PostMapping(value = "/course/sort")
+    public ResponseDto<SortDto> sort(@RequestBody SortDto sortDto) {
+        ResponseDto<SortDto> responseDto = new ResponseDto<>();
+        courseService.sort(sortDto);
+        return responseDto;
+    }
 }
