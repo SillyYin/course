@@ -12,6 +12,7 @@ import com.yinrj.server.service.CourseCategoryService;
 import com.yinrj.server.util.CopyUtil;
 import com.yinrj.server.util.UuidUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -54,6 +55,7 @@ public class CourseCategoryServiceImpl implements CourseCategoryService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void saveBatch(String courseId, List<CategoryDto> dtoList) {
         CourseCategoryExample example = new CourseCategoryExample();
         example.createCriteria().andCourseIdEqualTo(courseId);
@@ -65,6 +67,19 @@ public class CourseCategoryServiceImpl implements CourseCategoryService {
             courseCategory.setCourseId(courseId);
             addCourseCategory(courseCategory);
         }
+    }
+
+    /**
+     * 根据课程Id查找其所有分类
+     * @param courseId
+     * @return
+     */
+    @Override
+    public List<CourseCategoryDto> listByCourseId(String courseId) {
+        CourseCategoryExample example = new CourseCategoryExample();
+        example.createCriteria().andCourseIdEqualTo(courseId);
+        List<CourseCategory> courseCategoryList = courseCategoryMapper.selectByExample(example);
+        return CopyUtil.copyList(courseCategoryList, CourseCategoryDto.class);
     }
 
 

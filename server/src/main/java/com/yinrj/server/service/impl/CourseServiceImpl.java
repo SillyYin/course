@@ -13,6 +13,7 @@ import com.yinrj.server.util.CopyUtil;
 import com.yinrj.server.util.UuidUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -47,6 +48,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void save(CourseDto courseDto) {
         Date now = new Date();
         courseDto.setUpdatedAt(now);

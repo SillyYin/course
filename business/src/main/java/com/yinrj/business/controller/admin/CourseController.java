@@ -1,14 +1,17 @@
 package com.yinrj.business.controller.admin;
 
+import com.yinrj.server.dto.CourseCategoryDto;
 import com.yinrj.server.dto.CourseDto;
 import com.yinrj.server.dto.PageDto;
 import com.yinrj.server.dto.ResponseDto;
+import com.yinrj.server.service.CourseCategoryService;
 import com.yinrj.server.service.CourseService;
 import com.yinrj.server.util.ValidatorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author Yin
@@ -22,6 +25,9 @@ public class CourseController {
 
     @Resource
     private CourseService courseService;
+
+    @Resource
+    private CourseCategoryService courseCategoryService;
 
     @PostMapping("/course/list")
     public ResponseDto<PageDto<CourseDto>> courseList(@RequestBody PageDto<CourseDto> pageDto) {
@@ -48,6 +54,14 @@ public class CourseController {
     public ResponseDto<CourseDto> delete(@PathVariable String id) {
         ResponseDto<CourseDto> responseDto = new ResponseDto<>();
         courseService.delete(id);
+        return responseDto;
+    }
+
+    @GetMapping("/course/list-category/{courseId}")
+    public ResponseDto<List<CourseCategoryDto>> listCategory(@PathVariable(value = "courseId") String courseId) {
+        ResponseDto<List<CourseCategoryDto>> responseDto = new ResponseDto<>();
+        List<CourseCategoryDto> dtoList = courseCategoryService.listByCourseId(courseId);
+        responseDto.setContent(dtoList);
         return responseDto;
     }
 }
