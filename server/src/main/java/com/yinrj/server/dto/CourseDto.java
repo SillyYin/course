@@ -36,6 +36,16 @@ public class CourseDto {
      */
     private List<CategoryDto> categorys;
 
+    private String teacherId;
+
+    public String getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
+    }
+
     public List<CategoryDto> getCategorys() {
         return categorys;
     }
@@ -165,6 +175,7 @@ public class CourseDto {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", categorys=" + categorys +
+                ", teacherId='" + teacherId + '\'' +
                 '}';
     }
 }
