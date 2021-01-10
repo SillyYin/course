@@ -1,5 +1,6 @@
 package com.yinrj.server.service;
 
+import com.yinrj.server.dto.CourseContentDto;
 import com.yinrj.server.dto.CourseDto;
 import com.yinrj.server.dto.PageDto;
 
@@ -15,4 +16,8 @@ public interface CourseService {
     void delete(String id);
 
     void updateCourseTime(String courseId);
+
+    CourseContentDto getCourseContentByCourseId(String courseId);
+
+    int saveContent(CourseContentDto courseContentDto);
 }

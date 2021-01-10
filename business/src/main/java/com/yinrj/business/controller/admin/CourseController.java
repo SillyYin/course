@@ -1,9 +1,6 @@
 package com.yinrj.business.controller.admin;
 
-import com.yinrj.server.dto.CourseCategoryDto;
-import com.yinrj.server.dto.CourseDto;
-import com.yinrj.server.dto.PageDto;
-import com.yinrj.server.dto.ResponseDto;
+import com.yinrj.server.dto.*;
 import com.yinrj.server.service.CourseCategoryService;
 import com.yinrj.server.service.CourseService;
 import com.yinrj.server.util.ValidatorUtil;
@@ -62,6 +59,20 @@ public class CourseController {
         ResponseDto<List<CourseCategoryDto>> responseDto = new ResponseDto<>();
         List<CourseCategoryDto> dtoList = courseCategoryService.listByCourseId(courseId);
         responseDto.setContent(dtoList);
+        return responseDto;
+    }
+
+    @GetMapping("/course/find-content/{id}")
+    public ResponseDto<CourseContentDto> getCourseContentByCourseId(@PathVariable(value = "id") String courseId) {
+        ResponseDto<CourseContentDto> responseDto = new ResponseDto<>();
+        responseDto.setContent(courseService.getCourseContentByCourseId(courseId));
+        return responseDto;
+    }
+
+    @PostMapping("/course/save-content")
+    public ResponseDto<CourseContentDto> saveCourseContent(@RequestBody CourseContentDto courseContentDto) {
+        ResponseDto<CourseContentDto> responseDto = new ResponseDto<>();
+        courseService.saveContent(courseContentDto);
         return responseDto;
     }
 }

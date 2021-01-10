@@ -3,8 +3,11 @@ package com.yinrj.server.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yinrj.server.domain.Course;
+import com.yinrj.server.domain.CourseContent;
+import com.yinrj.server.dto.CourseContentDto;
 import com.yinrj.server.dto.CourseDto;
 import com.yinrj.server.dto.PageDto;
+import com.yinrj.server.mapper.CourseContentMapper;
 import com.yinrj.server.mapper.CourseMapper;
 import com.yinrj.server.mapper.my.MyCourseMapper;
 import com.yinrj.server.service.CourseCategoryService;
@@ -32,6 +35,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Resource
     private MyCourseMapper myCourseMapper;
+
+    @Resource
+    private CourseContentMapper courseContentMapper;
 
     @Resource
     private CourseCategoryService courseCategoryService;
@@ -74,6 +80,27 @@ public class CourseServiceImpl implements CourseService {
     public void updateCourseTime(String courseId) {
         log.debug("更新课程时常: {}", courseId);
         myCourseMapper.updateTime(courseId);
+    }
+
+    @Override
+    public CourseContentDto getCourseContentByCourseId(String courseId) {
+        CourseContent courseContent = courseContentMapper.selectByPrimaryKey(courseId);
+        if (courseContent == null) {
+            return null;
+        }
+        return CopyUtil.copy(courseContent, CourseContentDto.class);
+    }
+
+    @Override
+    public int saveContent(CourseContentDto courseContentDto) {
+        CourseContent courseContent = CopyUtil.copy(courseContentDto, CourseContent.class);
+        // 先去更新，如果没有更新到则去insert
+        // updateByPrimaryKeyWithBLOBs是对于有mediumtext数据类型的时候生成的方法
+        int i = courseContentMapper.updateByPrimaryKeyWithBLOBs(courseContent);
+        if (i == 0) {
+            i = courseContentMapper.insert(courseContent);
+        }
+        return i;
     }
 
 
