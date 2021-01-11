@@ -24,7 +24,7 @@ public class GatewayApplication {
         SpringApplication app = new SpringApplication(GatewayApplication.class);
         Environment environment = app.run(args).getEnvironment();
         LOGGER.info("启动成功");
-        LOGGER.info("System地址: \thttp://127.0.0.1:{}", environment.getProperty("server.port"));
+        LOGGER.info("Gateway地址: \thttp://127.0.0.1:{}", environment.getProperty("server.port"));
     }
 
     @Bean
