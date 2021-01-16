@@ -2,6 +2,7 @@ package com.yinrj.file.controller.admin;
 
 import com.yinrj.server.dto.FileDto;
 import com.yinrj.server.dto.ResponseDto;
+import com.yinrj.server.enums.FileUseEnum;
 import com.yinrj.server.service.FileService;
 import com.yinrj.server.util.UuidUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +38,7 @@ public class UploadController {
     private String FILE_PATH;
 
     @PostMapping("/upload")
-    public ResponseDto<String> upload(@RequestParam MultipartFile file) throws IOException {
-        log.info("文件开始上传: {}", file);
+    public ResponseDto<FileDto> upload(@RequestParam MultipartFile file, String use) throws IOException {
         log.info(file.getOriginalFilename());
         log.info(String.valueOf(file.getSize()));
 
@@ -51,24 +51,33 @@ public class UploadController {
 
         String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
         String path = key + "." + suffix;
+        FileUseEnum useEnum = FileUseEnum.getByCode(use);
 
-        String fullPath = FILE_PATH + path;
+        String dir = useEnum.name().toLowerCase();
+        File fullDir = new File(FILE_PATH + dir);
+        if (!fullDir.exists()) {
+            fullDir.mkdir();
+        }
+
+        String fullPath = fullDir + File.separator + path;
         log.info("文件全路径：{}", fullPath);
         File dest = new File(fullPath);
         file.transferTo(dest);
         log.info(dest.getAbsolutePath());
 
         log.info("保存文件记录开始");
+
         FileDto fileDto = new FileDto();
         fileDto.setPath(path);
         fileDto.setName(fileName);
         fileDto.setSize(Math.toIntExact(file.getSize()));
         fileDto.setSuffix(suffix);
-        fileDto.setUse("");
+        fileDto.setUse(use);
         fileService.save(fileDto);
 
-        ResponseDto<String> responseDto = new ResponseDto<>();
-        responseDto.setContent(FILE_DOMAIN + key + "." + suffix);
+        ResponseDto<FileDto> responseDto = new ResponseDto<>();
+        fileDto.setPath(FILE_DOMAIN + dir + File.separator + path);
+        responseDto.setContent(fileDto);
         return responseDto;
     }
 }
