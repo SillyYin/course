@@ -13,16 +13,16 @@ import java.util.Map;
  */
 public class ServerGenerator {
 
-    public static final String MODULE = "file";
+    public static final String MODULE = "business";
 
     public static final String SERVICE_PATH = "server/src/main/java/com/yinrj/server/service/";
     public static final String SERVICE_IMPL_PATH = "server/src/main/java/com/yinrj/server/service/impl/";
     public static final String CONTROLLER_PATH = MODULE + "/src/main/java/com/yinrj/" + MODULE + "/controller/admin/";
 
     public static void main(String[] args) throws IOException, TemplateException {
-        String Domain = "File";
-        String domain = "file";
-        String tableNameCn = "文件";
+        String Domain = "CourseContentFile";
+        String domain = "courseContentFile";
+        String tableNameCn = "课程内容文件";
         Map<String, Object> map = new HashMap<>();
         map.put("Domain", Domain);
         map.put("domain", domain);
